@@ -1,4 +1,5 @@
-# MDX Deck + Code Surfer template
+# Hooked on Hooks
+> An introduction to React hooks
 
 This project was generated with the `npm init code-surfer-deck` command.
 

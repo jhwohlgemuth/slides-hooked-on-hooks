@@ -25,7 +25,10 @@
         "eslint-config-omaha-prime-grade": "^11.0.4",
         "gatsby-source-filesystem": "^2.1.48",
         "mdx-deck": "^4.1.0",
+        "mdx-deck-live-code": "^1.0.1",
         "merge2": "file:merge2",
+        "raw-loader": "^4.0.0",
+        "styled-components": "^5.0.1",
         "watch": "^1.0.2"
     },
     "name": "slides-hooked-on-hooks"

@@ -1,6 +1,7 @@
 import {Image, themes} from 'mdx-deck';
 import {CodeSurfer, CodeSurferColumns, Step} from 'code-surfer';
 import {github, vsDark} from '@code-surfer/themes';
+import {LiveCode} from 'mdx-deck-live-code';
 
 export const theme = themes.yellow;
 
@@ -112,9 +113,8 @@ class Ticker extends Component {
         clearInterval(this.id);
     }
     render() {
-        return <header>
-            <div>Count: {this.state.count}</div>
-        </header>;
+        const {count} = this.state;
+        return <div>Count: {count}</div>;
     }
     tick() {
         this.setState({
@@ -125,6 +125,43 @@ class Ticker extends Component {
 ```
 
 </CodeSurfer>
+
+---
+
+<LiveCode
+  title="Class Component - Live Example"
+  size="large"
+  code={`
+class Ticker extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            count: 0
+        };
+        this.tick = this.tick.bind(this);    
+    }
+    componentDidMount() {
+        this.id = setInterval(this.tick, 1000);
+    }
+    componentWillUnmount() {
+        clearInterval(this.id);
+    }
+    render() {
+        const {count} = this.state;
+        return <div>Count: {count}</div>;
+    }
+    tick() {
+        this.setState({
+            count: this.state.count + 1
+        });
+    }
+}`}
+  previewProps={{
+    style: {
+      padding: '30px'
+    }
+  }}
+/>
 
 ---
 

@@ -103,15 +103,23 @@ class Ticker extends Component {
         this.state = {
             count: 0
         };
-        this.update = this.update.bind(this);    
+        this.tick = this.tick.bind(this);    
+    }
+    componentDidMount() {
+        this.id = setInterval(this.tick, 1000);
+    }
+    componentWillUnmount() {
+        clearInterval(this.id);
     }
     render() {
-        
-        return <div>Count: {this.state.count}</div>;
+        return <header>
+            <div>Count: {this.state.count}</div>
+        </header>;
     }
-    update() {
-        const {count} = this.state;
-        this.setState('count', count + 1);
+    tick() {
+        this.setState({
+            count: this.state.count + 1
+        });
     }
 }
 ```
@@ -127,8 +135,9 @@ import React, {useState, useEffect} from 'react';
 
 const Ticker = () => {
     const [count, setCount] = useState(0);
+    const tick = () => setCount(count + 1);
     useEffect(() => {
-        const counter = setInterval(() => setCount(count + 1), 1000);
+        const counter = setInterval(tick, 1000);
         return () => clearInterval(counter);
     });
     return <div>Count: {count}</div>;

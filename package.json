@@ -1,14 +1,32 @@
 {
-  "private": true,
-  "version": "1.0.0",
-  "scripts": {
-    "start": "mdx-deck deck.mdx --host 0.0.0.0",
-    "build": "mdx-deck build deck.mdx",
-    "test": "echo \"there are no tests\""
-  },
-  "devDependencies": {
-    "code-surfer": "3.0.0",
-    "mdx-deck": "3.0.13"
-  },
-  "name": "slides-hooked-on-hooks"
+    "private": true,
+    "version": "1.0.0",
+    "scripts": {
+        "start": "mdx-deck deck.mdx --host 0.0.0.0",
+        "build": "mdx-deck build deck.mdx",
+        "deploy": "surge public hooked-on-hooks.surge.sh",
+        "lint": "eslint snippets -c ./.eslintrc.js --fix",
+        "lint:ing": "watch 'npm run lint' ./src",
+        "lint:tests": "eslint __tests__/**/*.js -c ./.eslintrc.js --fix --no-ignore"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.8.4",
+        "@babel/core": "^7.8.4",
+        "@babel/plugin-proposal-class-properties": "^7.8.3",
+        "@babel/plugin-proposal-export-default-from": "^7.8.3",
+        "@babel/plugin-proposal-optional-chaining": "^7.8.3",
+        "@babel/plugin-transform-runtime": "^7.8.3",
+        "@babel/preset-env": "^7.8.4",
+        "@babel/runtime": "^7.8.4",
+        "babel-eslint": "^10.0.3",
+        "babel-preset-minify": "^0.5.1",
+        "code-surfer": "3.0.0",
+        "eslint": "^6.8.0",
+        "eslint-config-omaha-prime-grade": "^11.0.4",
+        "gatsby-source-filesystem": "^2.1.48",
+        "mdx-deck": "^4.1.0",
+        "merge2": "file:merge2",
+        "watch": "^1.0.2"
+    },
+    "name": "slides-hooked-on-hooks"
 }

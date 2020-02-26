@@ -1,72 +1,154 @@
-import {
-  CodeSurfer,
-  CodeSurferColumns,
-  Step,
-} from "code-surfer";
-import { github, vsDark } from "@code-surfer/themes";
+import {Image, themes} from 'mdx-deck';
+import {CodeSurfer, CodeSurferColumns, Step} from 'code-surfer';
+import {github, vsDark} from '@code-surfer/themes';
 
-export const theme = github;
+export const theme = themes.yellow;
 
-# Hello 👋
+# Hooked on Hooks
 
-You are using [MDX Deck](https://github.com/jxnblk/mdx-deck) and [Code Surfer](https://codesurfer.pomb.us)
+by [Jason Wohlgemuth](https://landr.me/jason)
 
 ---
 
-<CodeSurfer>
+## Things to talk about
+- What is React?
+- Components
+  - Class Components
+  - Function Components
+- フックの道 ("way of the hook")
 
-```js title="This is a title" subtitle="and this a subtitle"
-console.log(1);
-console.log(2);
-console.log(3);
-```
+---
 
-```js 2
-console.log(1);
-console.log(2);
-console.log(3);
-console.log(4);
-```
+# What is React?
 
-```diff 1 title="one"
-```
+---
 
-```diff 2 title="two"
+<div style={{
+  width: '100%',
+  textAlign: 'center'
+}}>
+  <div style={{
+    borderLeft: 'solid #222 10px',
+    fontSize: '55px',
+    margin: '0 auto',
+    padding: '10px 40px',
+    width: '60%'
+  }}>
+
+  "A JavaScript library for building user interfaces"
+
+  </div>
+</div>
+
+> :atom_symbol: [reactjs.org](https://reactjs.org/)
+
+---
+
+<div style={{
+  width: '100%',
+  textAlign: 'center'
+}}>
+  <div style={{
+    borderLeft: 'solid #222 10px',
+    fontSize: '55px',
+    margin: '0 auto',
+    padding: '10px 40px',
+    width: '60%'
+  }}>
+
+  "React provides a declarative library that keeps the DOM in sync with your data"
+
+  </div>
+</div>
+
+> 👨‍🏫 [some other brown bag I gave](http://sustainable.surge.sh/#/31)
+
+---
+
+<div style={{
+  width: '100%',
+  textAlign: 'center'
+}}>
+
+## ...a library of what?
+
+</div>
+
+---
+
+# :books: vs :hammer_and_wrench:
+
+---
+
+## Tools to Create:
+
+<ul>
+  <Steps>
+    <li>Class Components</li>
+    <li>Function Components</li>
+    <li>...and some other stuff</li>
+  </Steps>
+</ul>
+
+---
+
+<CodeSurfer theme={github}>
+
+```jsx title='Class Component'
+import {Component} from 'react';
+
+class Ticker extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            count: 0
+        };
+        this.update = this.update.bind(this);    
+    }
+    render() {
+        
+        return <div>Count: {this.state.count}</div>;
+    }
+    update() {
+        const {count} = this.state;
+        this.setState('count', count + 1);
+    }
+}
 ```
 
 </CodeSurfer>
 
 ---
 
-<CodeSurferColumns>
+<CodeSurfer theme={github}>
 
-<Step subtitle="First Step">
+```jsx title='Function Component'
+import React, {useState, useEffect} from 'react';
 
-```js file=./code.js
+const Ticker = () => {
+    const [count, setCount] = useState(0);
+    useEffect(() => {
+        const counter = setInterval(() => setCount(count + 1), 1000);
+        return () => clearInterval(counter);
+    });
+    return <div>Count: {count}</div>;
+};
 ```
 
-```js
-console.log("a");
-console.log("b");
-```
+</CodeSurfer>
 
-</Step>
+---
 
-<Step subtitle="Second Step">
+## Tools to Create:
 
-```js 2
-console.log(1);
-console.log(2);
-```
-
-```js 2
-console.log("a");
-console.log("b");
-```
-
-</Step>
-
-</CodeSurferColumns>
+<ul>
+  <li>Class Components</li>
+  <li>Function Components</li>
+  <Steps>
+    <li>Hooks</li>
+  </Steps>
+  <li>...and some other stuff</li>
+</ul>
 
 ---
 
@@ -75,11 +157,11 @@ console.log("b");
 <Step>
 
 ```js
-const magna = aliqua => aliqua.ut((enim, ad) => enim, 0);
+one
 ```
 
 ```js
-const minim = (ad, enim) => dolore.magna(ad / enim);
+two
 ```
 
 </Step>
@@ -87,31 +169,11 @@ const minim = (ad, enim) => dolore.magna(ad / enim);
 <Step>
 
 ```js
-const lorem = (ipsum, dolor, sit) => {
-  const amet = dolor - ipsum;
-  return consectetur.adipiscing(
-    {
-      elit: sed.eiusmod(sit - dolor) / amet + 2,
-    },
-    (tempor, incididunt) => ipsum + amet * incididunt
-  );
-};
-
-const magna = aliqua => aliqua.ut((enim, ad) => enim, 0);
+three
 ```
 
 ```js
-const minim = (ad, enim) => dolore.magna(ad / enim);
-
-const sed = (eiusmod, tempor, incididunt) => {
-  const ut = tempor - eiusmod;
-  return labore.et(
-    {
-      amet: dolore.magna(incididunt - tempor) / ut + 2,
-    },
-    (aliqua, elit) => eiusmod + ut * elit
-  );
-};
+four
 ```
 
 </Step>
@@ -121,7 +183,25 @@ const sed = (eiusmod, tempor, incididunt) => {
 ---
 
 # references
+- [Rules of Hooks](https://reactjs.org/docs/hooks-rules.html)
 - [useHooks](https://usehooks.com/)
 - [Thinking in React Hooks](https://wattenberger.com/blog/react-hooks)
-- [beautiful <REACTHOOKS />](https://beautifulinteractions.github.io/beautiful-react-hooks/)
+- [beautiful <REACTHOOKS /\>](https://beautifulinteractions.github.io/beautiful-react-hooks/)
 - [SWR](https://swr.now.sh/)
+
+---
+
+
+<Image
+  src='https://source.unsplash.com/random/768x2048?brooklyn'
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'white',
+    backgroundColor: 'black'
+  }}>
+
+## Background Image
+
+</Image>

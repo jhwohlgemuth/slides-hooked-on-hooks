@@ -5,7 +5,7 @@ import {LiveCode} from 'mdx-deck-live-code';
 
 export const theme = themes.yellow;
 
-# Hooked on Hooks
+# Hooked on Hooks!!!
 
 by [Jason Wohlgemuth](https://landr.me/jason)
 
@@ -57,12 +57,16 @@ by [Jason Wohlgemuth](https://landr.me/jason)
     width: '60%'
   }}>
 
-  "React provides a declarative library that keeps the DOM in sync with your data"
+  "React provides a declarative library that keeps the DOM* in sync with your data"
 
   </div>
 </div>
 
 > 👨‍🏫 [some other brown bag I gave](http://sustainable.surge.sh/#/31)
+
+<footer style={{position: 'fixed', bottom: 0, padding: '20px', textAlign: 'center'}}>
+    * Not just the DOM...the React pattern can also be applied to the command line! See <a href="https://github.com/jhwohlgemuth/tomo-cli">tomo-cli</a> for an example 🤓
+</footer>
 
 ---
 
@@ -81,13 +85,13 @@ by [Jason Wohlgemuth](https://landr.me/jason)
 
 ---
 
-## Tools to Create:
+## Tools to Create and Use:
 
 <ul>
   <Steps>
     <li>Class Components</li>
     <li>Function Components</li>
-    <li>...and some other stuff</li>
+    <li>...some other stuff</li>
   </Steps>
 </ul>
 
@@ -95,7 +99,7 @@ by [Jason Wohlgemuth](https://landr.me/jason)
 
 <CodeSurfer theme={nightOwl}>
 
-```jsx title='Class Component'
+```jsx title='Ticker Class Component'
 import React, {Component} from 'react';
 
 class Ticker extends Component {
@@ -129,7 +133,7 @@ class Ticker extends Component {
 ---
 
 <LiveCode
-  title="Class Component - Live Example"
+  title="Ticker Class Component - Live Example"
   size="medium"
   code={`
 class Ticker extends React.Component {
@@ -171,15 +175,127 @@ class Ticker extends React.Component {
 
 ---
 
+## Tools to Create and Use:
+
+<ul>
+  <li>Class Components</li>
+  <li><i>Simple</i> Function Components</li>
+  <Steps>
+    <li><i>Complex</i> Function Components <i>with</i> <b>Hooks</b>!!!</li>
+  </Steps>
+  <li>...some other stuff</li>
+</ul>
+
+---
+
 <CodeSurfer theme={nightOwl}>
 
-```jsx title='Function Component'
+```jsx title='Ticker Function Component'
 import React, {useState, useEffect} from 'react';
 
 const Ticker = () => {
     const [count, setCount] = useState(0);
     const tick = () => setCount(count + 1);
     useEffect(() => {
+        const counter = setInterval(tick, 1000);
+        return () => clearInterval(counter);
+    });
+    return <div>Count: {count}</div>;
+};
+```
+
+</CodeSurfer>
+
+---
+
+<LiveCode
+  title="Ticker Function Component - Live Example"
+  size="medium"
+  code={`
+() => {
+    const {useEffect, useState} = React;
+    const [count, setCount] = useState(0);
+    const tick = () => setCount(count + 1);
+    useEffect(() => {
+        console.log('hook');
+        const counter = setInterval(tick, 1000);
+        return () => clearInterval(counter);
+    });
+    return <div>Count: {count}</div>;
+}`}
+  previewProps={{
+    style: {
+      padding: '30px',
+      fontSize: '80px'
+    }
+  }}
+  editorProps={{
+    style: {
+      padding: '30px',
+      fontSize: '20px'
+    }
+  }}
+/>
+
+---
+
+<CodeSurfer theme={nightOwl}>
+
+```jsx title='Ticker Function Component (optimized)'
+import React, {useState, useEffect} from 'react';
+
+const Ticker = () => {
+    const [count, setCount] = useState(0);
+    const tick = () => setCount(count + 1);
+    useEffect(() => {
+        const counter = setInterval(tick, 1000);
+        return () => clearInterval(counter);
+    });
+    return <div>Count: {count}</div>;
+};
+```
+
+```diff 7 title='Ticker Function Component (optimized)' subtitle="useEffect executes code every update (state change)"
+```
+
+```jsx title='Ticker Function Component (optimized)' subtitle='console.log will execute with every "tick"'
+import React, {useState, useEffect} from 'react';
+
+const Ticker = () => {
+    const [count, setCount] = useState(0);
+    const tick = () => setCount(count + 1);
+    useEffect(() => {
+        console.log('hook');
+        const counter = setInterval(tick, 1000);
+        return () => clearInterval(counter);
+    });
+    return <div>Count: {count}</div>;
+};
+```
+
+```jsx title='Ticker Function Component (optimized)' subtitle='skip effects (only run on first mount when [] is passed)'
+import React, {useState, useEffect} from 'react';
+
+const Ticker = () => {
+    const [count, setCount] = useState(0);
+    const tick = () => setCount(count + 1);
+    useEffect(() => {
+        console.log('hook');
+        const counter = setInterval(tick, 1000);
+        return () => clearInterval(counter);
+    }, []);
+    return <div>Count: {count}</div>;
+};
+```
+
+```jsx title='Ticker Function Component (optimized)' subtitle='useEffect does not have access to current state, so you need to provide it'
+import React, {useState, useEffect} from 'react';
+
+const Ticker = () => {
+    const [count, setCount] = useState(0);
+    const tick = () => setCount(count => count + 1);
+    useEffect(() => {
+        console.log('hook');
         const counter = setInterval(tick, 1000);
         return () => clearInterval(counter);
     }, []);
@@ -192,14 +308,15 @@ const Ticker = () => {
 ---
 
 <LiveCode
-  title="Function Component - Live Example"
+  title="Ticker Function Component - Optimized Live Example"
   size="medium"
   code={`
 () => {
     const {useEffect, useState} = React;
     const [count, setCount] = useState(0);
-    const tick = () => setCount(count + 1);
+    const tick = () => setCount(count => count + 1);
     useEffect(() => {
+        console.log('hook');
         const counter = setInterval(tick, 1000);
         return () => clearInterval(counter);
     }, []);
@@ -221,24 +338,11 @@ const Ticker = () => {
 
 ---
 
-## Tools to Create:
-
-<ul>
-  <li>Class Components</li>
-  <li>Function Components</li>
-  <Steps>
-    <li>Hooks</li>
-  </Steps>
-  <li>...and some other stuff</li>
-</ul>
-
----
-
 <CodeSurferColumns themes={[nightOwl, github]}>
 
 <Step>
 
-```jsx
+```jsx title="Class"
 import React, {Component} from 'react';
 
 class Ticker extends React.Component {
@@ -269,17 +373,16 @@ class Ticker extends React.Component {
 render(<Ticker />);
 ```
 
-```jsx
+```jsx title="Function"
 import React, {useState, useEffect} from 'react';
 
 const Ticker = () => {
-    const {useEffect, useState} = React;
     const [count, setCount] = useState(0);
     const tick = () => setCount(count + 1);
     useEffect(() => {
         const counter = setInterval(tick, 1000);
         return () => clearInterval(counter);
-    }, []);
+    });
     return <div>Count: {count}</div>;
 };
 
@@ -290,10 +393,80 @@ render(<Ticker />);
 
 <Step>
 
-```diff 1 title="Import React"
+```diff 1 title="Import React and Component class"
 ```
 
-```diff 1 title="Import React"
+```diff 1 title="Import React and hooks"
+```
+
+</Step>
+
+<Step>
+
+```diff 4:10 title="Create class constructor (optional)" subtitle="If you want to use class properties, see @babel/plugin-proposal-class-properties"
+```
+
+```diff 4:5 title="Hooks don't need no stinkin constructors"
+```
+
+</Step>
+
+<Step>
+
+```diff 6:8 title="Declare state object"
+```
+
+```diff 4 title="Declare state variables with useState"
+```
+
+</Step>
+
+<Step>
+
+```diff 9,21:25 title="Bind methods to this"
+```
+
+```diff 2 title="Don't need this with hooks"
+```
+
+</Step>
+
+<Step>
+
+```diff 22:24 title="Update entire state with setState"
+```
+
+```diff 5[23:50] title="Update elements of state using individual functions"
+```
+
+</Step>
+
+<Step>
+
+```diff 11:20 title="Configure component life cycle with multiple methods from the React API"
+```
+
+```diff 6:9 title="Hooooooks!" subtitle="There are several built in hooks - useState and useEffect are the most popular"
+```
+
+</Step>
+
+<Step>
+
+```diff 17:20,28 title="Render the component in the DOM"
+```
+
+```diff 10,13 title="Render the component in the DOM"
+```
+
+</Step>
+
+<Step>
+
+```diff 14:16 title="Clean up with method from React API"
+```
+
+```diff 8 title="Simply return an arrow function in useEffect"
 ```
 
 </Step>
@@ -302,26 +475,140 @@ render(<Ticker />);
 
 ---
 
-# references
-- [Rules of Hooks](https://reactjs.org/docs/hooks-rules.html)
-- [useHooks](https://usehooks.com/)
-- [Thinking in React Hooks](https://wattenberger.com/blog/react-hooks)
-- [beautiful <REACTHOOKS /\>](https://beautifulinteractions.github.io/beautiful-react-hooks/)
-- [SWR](https://swr.now.sh/)
+<h1>
+  <pre style={{backgroundColor: 'transparent', color: 'black'}}>Hooks are __________!!!</pre>
+</h1>
 
 ---
 
+<h1>
+  <pre style={{backgroundColor: 'transparent', color: 'black'}}>Hooks are functional!!!</pre>
+</h1>
 
-<Image
-  src='https://source.unsplash.com/random/768x2048?brooklyn'
-  style={{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'white',
-    backgroundColor: 'black'
-  }}>
+---
 
-## Background Image
+<h1>
+  <pre style={{backgroundColor: 'transparent', color: 'black'}}>Hooks are _______!!!</pre>
+</h1>
 
-</Image>
+---
+
+<h1>
+  <pre style={{backgroundColor: 'transparent', color: 'black'}}>Hooks are focused!!!</pre>
+</h1>
+
+---
+
+<h1>
+  <pre style={{backgroundColor: 'transparent', color: 'black'}}>Hooks are __________!!!</pre>
+</h1>
+
+---
+
+<h1>
+  <pre style={{backgroundColor: 'transparent', color: 'black'}}>Hooks are the future!!!</pre>
+</h1>
+
+---
+
+<CodeSurfer theme={nightOwl}>
+
+```js title='Manage state'
+const [value, setValue] = useState(initialValue);
+```
+
+```js title='Clean up common idioms (and my example)' subtitle='https://beautifulinteractions.github.io/beautiful-react-hooks/#/useInterval'
+const [value, setValue] = useState(initialValue);
+
+useInterval(() => {
+    // do something
+}, 1000);
+```
+
+```js title='Interact with async Web API' subtitle='https://beautifulinteractions.github.io/beautiful-react-hooks/#/useGeolocation'
+const [value, setValue] = useState(initialValue);
+
+useInterval(() => {
+    // do something
+}, 1000);
+
+const [geolocation, {onChange}] = useGeolocation();
+onChange(() => {
+    console.log('Position changed!');
+});
+```
+
+```js title='Handle async data retrieval' subtitle='https://github.com/tannerlinsley/react-query'
+const [value, setValue] = useState(initialValue);
+
+useInterval(() => {
+    // do something
+}, 1000);
+
+const [geolocation, {onChange}] = useGeolocation();
+onChange(() => {
+    console.log('Position changed!');
+});
+
+const {status, data, error} = useQuery('todos', fetchTodoList);
+```
+
+```jsx title='Perform declarative application routing' subtitle='https://reacttraining.com/react-router/web/api/Hooks/useroutematch'
+const [value, setValue] = useState(initialValue);
+
+useInterval(() => {
+    // do something
+}, 1000);
+
+const [geolocation, {onChange}] = useGeolocation();
+onChange(() => {
+    console.log('Position changed!');
+});
+
+const {status, data, error} = useQuery('todos', fetchTodoList);
+
+const BlogPost = () => {
+  let match = useRouteMatch("/blog/:slug");
+  return <div />;
+}
+
+```
+
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer theme={nightOwl}>
+
+```jsx title='Create custom hooks with hooks!' subtitle='https://reactjs.org/docs/hooks-faq.html#how-to-get-the-previous-props-or-state'
+function usePrevious(value) {
+    const ref = useRef();
+    useEffect(() => {
+        ref.current = value;
+    });
+    return ref.current;
+}
+
+const Counter = () => {
+    const [count, setCount] = useState(0);
+    const prevCount = usePrevious(count);
+    return <h1>Now: {count}, before: {prevCount}</h1>;
+};
+```
+
+</CodeSurfer>
+
+---
+
+# references
+- [Rules of Hooks](https://reactjs.org/docs/hooks-rules.html)
+- [useHooks](https://usehooks.com/)
+- [beautiful <REACTHOOKS /\>](https://beautifulinteractions.github.io/beautiful-react-hooks/)
+- [Thinking in React Hooks](https://wattenberger.com/blog/react-hooks)
+- [React's useEffect and useRef Explained for Mortals](https://leewarrick.com/blog/react-use-effect-explained/)
+- [SWR](https://swr.now.sh/)
+- [react-query](https://github.com/tannerlinsley/react-query)
+- [eslint-plugin-react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks)
+- [react-hooks-testing-library](https://github.com/testing-library/react-hooks-testing-library)
+

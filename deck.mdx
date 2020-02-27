@@ -1,6 +1,6 @@
 import {Image, themes} from 'mdx-deck';
 import {CodeSurfer, CodeSurferColumns, Step} from 'code-surfer';
-import {github, vsDark} from '@code-surfer/themes';
+import {github, nightOwl, vsDark} from '@code-surfer/themes';
 import {LiveCode} from 'mdx-deck-live-code';
 
 export const theme = themes.yellow;
@@ -93,10 +93,10 @@ by [Jason Wohlgemuth](https://landr.me/jason)
 
 ---
 
-<CodeSurfer theme={github}>
+<CodeSurfer theme={nightOwl}>
 
 ```jsx title='Class Component'
-import {Component} from 'react';
+import React, {Component} from 'react';
 
 class Ticker extends Component {
     constructor(props) {
@@ -130,7 +130,7 @@ class Ticker extends Component {
 
 <LiveCode
   title="Class Component - Live Example"
-  size="large"
+  size="medium"
   code={`
 class Ticker extends React.Component {
     constructor(props) {
@@ -158,6 +158,12 @@ class Ticker extends React.Component {
 }`}
   previewProps={{
     style: {
+      padding: '30px',
+      fontSize: '80px'
+    }
+  }}
+  editorProps={{
+    style: {
       padding: '30px'
     }
   }}
@@ -165,7 +171,7 @@ class Ticker extends React.Component {
 
 ---
 
-<CodeSurfer theme={github}>
+<CodeSurfer theme={nightOwl}>
 
 ```jsx title='Function Component'
 import React, {useState, useEffect} from 'react';
@@ -176,12 +182,42 @@ const Ticker = () => {
     useEffect(() => {
         const counter = setInterval(tick, 1000);
         return () => clearInterval(counter);
-    });
+    }, []);
     return <div>Count: {count}</div>;
 };
 ```
 
 </CodeSurfer>
+
+---
+
+<LiveCode
+  title="Function Component - Live Example"
+  size="medium"
+  code={`
+() => {
+    const {useEffect, useState} = React;
+    const [count, setCount] = useState(0);
+    const tick = () => setCount(count + 1);
+    useEffect(() => {
+        const counter = setInterval(tick, 1000);
+        return () => clearInterval(counter);
+    }, []);
+    return <div>Count: {count}</div>;
+}`}
+  previewProps={{
+    style: {
+      padding: '30px',
+      fontSize: '80px'
+    }
+  }}
+  editorProps={{
+    style: {
+      padding: '30px',
+      fontSize: '20px'
+    }
+  }}
+/>
 
 ---
 
@@ -198,28 +234,66 @@ const Ticker = () => {
 
 ---
 
-<CodeSurferColumns themes={[vsDark, github]}>
+<CodeSurferColumns themes={[nightOwl, github]}>
 
 <Step>
 
-```js
-one
+```jsx
+import React, {Component} from 'react';
+
+class Ticker extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            count: 0
+        };
+        this.tick = this.tick.bind(this);    
+    }
+    componentDidMount() {
+        this.id = setInterval(this.tick, 1000);
+    }
+    componentWillUnmount() {
+        clearInterval(this.id);
+    }
+    render() {
+        const {count} = this.state;
+        return <div>Count: {count}</div>;
+    }
+    tick() {
+        this.setState({
+            count: this.state.count + 1
+        });
+    }
+}
+
+render(<Ticker />);
 ```
 
-```js
-two
+```jsx
+import React, {useState, useEffect} from 'react';
+
+const Ticker = () => {
+    const {useEffect, useState} = React;
+    const [count, setCount] = useState(0);
+    const tick = () => setCount(count + 1);
+    useEffect(() => {
+        const counter = setInterval(tick, 1000);
+        return () => clearInterval(counter);
+    }, []);
+    return <div>Count: {count}</div>;
+};
+
+render(<Ticker />);
 ```
 
 </Step>
 
 <Step>
 
-```js
-three
+```diff 1 title="Import React"
 ```
 
-```js
-four
+```diff 1 title="Import React"
 ```
 
 </Step>
